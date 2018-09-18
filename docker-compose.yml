@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  # 开发
+  dev:
+   build: .
+   ports:
+    - "9000:8000"
+   environment:
+    - NODE_ENV=development
+   volumes:
+    - .:/code
+    - /code/node_modules
+  # 测试 
+  test:
+   build: .
+   environment:
+    - NODE_ENV=test
+   volumes:
+    - .:/code
+    - /code/node_modules
+  # 生产
+  prod:
+   build: .
+   environment:
+    - NODE_ENV=production
+   volumes:
+    - .:/code
+    - ./nginx/www/dist:/code/dist
+    - /code/node_modules
+   ports:
+    - "8081:8000"
+  # nginx
+  nginx:
+   build: ./nginx
+   restart: always
+   ports:
+    - 8080:80
+    - 80:80
+    - 443:443
+  #  depends_on:
+  #   - prod
+   volumes:
+    - ./nginx/conf.d:/etc/nginx/conf.d
+    - ./nginx/log:/var/log/nginx
+    - ./nginx/www:/var/www
