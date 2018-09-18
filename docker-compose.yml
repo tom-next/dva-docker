@@ -11,7 +11,7 @@ services:
    volumes:
     - .:/code
     - /code/node_modules
-  # 测试 
+  # 测试
   test:
    build: .
    environment:
@@ -38,8 +38,8 @@ services:
     - 8080:80
     - 80:80
     - 443:443
-  #  depends_on:
-  #   - prod
+   depends_on:
+     - prod
    volumes:
     - ./nginx/conf.d:/etc/nginx/conf.d
     - ./nginx/log:/var/log/nginx
